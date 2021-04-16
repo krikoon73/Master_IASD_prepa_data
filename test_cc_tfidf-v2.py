@@ -285,7 +285,7 @@ if __name__ == "__main__":
                                   'f_measure',
                                   'processing_time'])
     max_ngram = 3
-    #max_df = 0.99
+
     Min = 0.
     Max = 1
     step = 0.1
@@ -294,8 +294,7 @@ if __name__ == "__main__":
     epochs = round((Max-Min)/step)
     big_manufacturer_list=["adobe","encore","topic","microsoft","aspyr","apple","fogware","intuit","punch","sony","nova","corel"]
     t_start = time()
-    for s in [0.1,0.2,0.3,0.6,0.7,0.9]:
-    #while s < Max:
+    for s in [0.1,0.2,0.3,0.6,0.9]:
         epoch += 1
         logging.info(f"epoch={epoch} - similiraty_threshold={round(s, 2)} - START")
         t_start_model = time()
@@ -345,96 +344,4 @@ if __name__ == "__main__":
     filename_score = "results/scores_run-full.csv"
     score.to_csv(filename_score, index=False)
 
-    fig, ax1 = plt.subplots(1, 1, figsize=(8, 4))
-    score.plot(ax=ax1, kind='line', x='fpr', y='tpr', label='tpr', legend=True)
-    ax2 = ax1.twinx()
-    ax2 = score.plot(secondary_y=True,
-                         x='fpr',
-                         y='similarity_threshold',
-                         label='similarity_threshold',
-                         ax=ax2,
-                         kind='scatter',
-                         marker='+',
-                         color='orange', legend=True)
-    ax1.set_ylabel('tpr')
-    ax2.set_ylabel("similiraty_threshold")
-    ax1.legend(loc="center")
-    ax2.legend(loc="center right")
-
-    plt.title("ROC")
-    # plt.show()
-    filename_roc = "results/ROC_run-full.png"
-    plt.savefig(filename_roc, bbox_inches='tight')
-    plt.close(fig)
-
-    '''while s < Max:
-        epoch +=1
-        logging.info(f"epoch={epoch} - similiraty_threshold={round(s, 2)} - START")
-        t_start_model = time()
-        model=NLTKprocessing(s,ngram_range,max_df)
-        Y_pred = model.fit(company1,company2)
-        results = model.predict(GroundTruth)
-        t_stop_model = time()
-        true_positives = results[0]
-        false_positives = results[1]
-        false_negatives = results[2]
-        precision = results[3]
-        recall = results[4]
-        f_measure = results[5]
-        score = score.append({'nb_ref_company1':len(company1),
-                              'nb_ref_company2':len(company2),
-                              'ngram_range':ngram_range,
-                              'max_df':max_df,
-                              'similarity_threshold': s,
-                              'true_positives':len(true_positives),
-                              'false_positives':len(false_positives),
-                              'false_negatives':len(false_negatives),
-                              'precision':precision,
-                              'recall':recall,
-                              'f_measure':f_measure,
-                              'processing_time':t_stop_model-t_start_model},
-                             ignore_index=True)
-        logging.info(f"epoch={epoch} - similiraty_threshold={round(s, 2)} - time = {t_stop_model-t_start_model} / f_measure={f_measure}")
-        s += step
-        #pbar.update(1)
-    t_stop = time()
-    logging.info(f"PROCESSING_TIME={t_stop-t_start}")
-    #results[6]
-
-    score['tpr'] = score['true_positives'] / (score['true_positives']+score['false_negatives'])
-    nb_distinct_ref_company1 = len(pd.unique(company1['id']))
-    logging.debug(f"nb_distinct_ref_company1={nb_distinct_ref_company1}")
-    nb_distinct_ref_company2 = len(pd.unique(company2['id']))
-    logging.debug(f"nb_distinct_ref_company2={nb_distinct_ref_company2}")
-    #score['true_negatives'] = abs(score['true_positives']-min(nb_distinct_ref_company1,nb_distinct_ref_company2))
-    score['true_negatives'] = nb_distinct_ref_company1*nb_distinct_ref_company2 - score['true_positives'] - score['false_positives'] - score['false_negatives']
-
-
-    score['fpr'] = score['false_positives']/(score['true_negatives']+score['false_positives'])
-    filename_score = "./results/scores_run-full.csv"
-    score.to_csv(filename_score,index=False)
-
-    fig,ax1 = plt.subplots(1,1,figsize=(8,4))
-
-    score.plot(ax=ax1,kind='line', x='fpr', y='tpr', label='tpr',legend=True)
-    ax2 = ax1.twinx()
-    ax2 = score.plot(secondary_y=True,
-               x='fpr',
-               y='similarity_threshold',
-               label='similarity_threshold',
-               ax=ax2,
-               kind='scatter',
-               marker='+',
-               color='orange',legend=True)
-    ax1.set_ylabel('tpr')
-    ax2.set_ylabel("similiraty_threshold")
-    ax1.legend(loc="center")
-    ax2.legend(loc="center right")
-
-    plt.title("ROC")
-    #plt.show()
-    filename_roc = "./results/ROC_run-full.png"
-    plt.savefig(filename_roc,bbox_inches='tight')
-    plt.close(fig)
-    '''
 

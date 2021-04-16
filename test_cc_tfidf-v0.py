@@ -286,7 +286,7 @@ if __name__ == "__main__":
 
 
     score['fpr'] = score['false_positives']/(score['true_negatives']+score['false_positives'])
-    filename_score = "./results/scores.csv"
+    filename_score = "results/scores_run-full.csv"
     score.to_csv(filename_score,index=False)
 
     fig,ax1 = plt.subplots(1,1,figsize=(8,4))
@@ -308,7 +308,7 @@ if __name__ == "__main__":
 
     plt.title("ROC")
     #plt.show()
-    filename_roc = "./results/ROC.png"
+    filename_roc = "results/ROC_run-full.png"
     plt.savefig(filename_roc,bbox_inches='tight')
     plt.close(fig)
 
